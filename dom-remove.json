@@ -1,0 +1,40 @@
+{
+  "TestName": "Remove domain test",
+  "AutoTest" : "True",
+  "TestScript" : "dom-remove-test.py",
+  "DomainName" : "RM-test",
+  "Cocon" : [
+    {
+      "Login" : "admin",
+      "Password" : "password",
+      "Host" : "192.168.118.47",
+      "Port" : "8023"
+    }
+  ],
+  "Users": [
+    {
+      "UserId": "0",
+      "Number": "156",
+      "Login": "156",
+      "Password": "123",
+      "SipDomain": "pv.ssw3",
+      "Expires": "90",
+      "Port": "10100",
+      "SipGroup": "sip.ab",
+      "QParam": "0.5"
+    },
+    {
+      "UserId": "1",
+      "Number": "159",
+      "Login": "159",
+      "Password": "123",
+      "SipDomain": "pv.ssw3",
+      "Expires": "90",
+      "Port": "10108",
+      "SipGroup": "sip.ab",
+      "QParam": "1"
+    }
+   ]
+
+ 
+}
