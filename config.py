@@ -36,8 +36,14 @@ finally:
 if testConfigJson['ModulePath'] not in 'None':
     sys.path.append(testConfigJson['ModulePath']) # add custom path to external modules if it in json config
 
-
-login = testConfigJson['Cocon'][0]['Login']
-password = testConfigJson['Cocon'][0]['Password']
-host = testConfigJson['Cocon'][0]['Host']
-port = int(testConfigJson['Cocon'][0]['Port'])
+if testConfigJson['SystemVars'][0]["%%MODULE_PATH%%"] not in 'None':
+    sys.path.append(testConfigJson['SystemVars'][0]['%%MODULE_PATH%%']) # add custom path to external modules if it in json config
+    login = testConfigJson['SystemVars'][0]['%%DEV_USER%%']
+    password = testConfigJson['SystemVars'][0]['%%DEV_PASS%%']
+    host = testConfigJson['SystemVars'][0]['%%SERV_IP%%']
+    port = int(testConfigJson['SystemVars'][0]['%%CCN_PORT%%'])
+else:
+    login = testConfigJson['Cocon'][0]['Login']
+    password = testConfigJson['Cocon'][0]['Password']
+    host = testConfigJson['Cocon'][0]['Host']
+    port = int(testConfigJson['Cocon'][0]['Port'])
