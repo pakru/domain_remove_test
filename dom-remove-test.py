@@ -6,19 +6,31 @@ import time
 import sys
 import colorama
 from colorama import Fore, Back, Style
-import modules.cocon_interface as ccn_iface
+#import modules.cocon_interface as ccn_iface
 import threading
 import logging
-import json
+#import json
+#import argparse
+import ssh_cocon.ssh_cocon as ccn
 import argparse
-
 # JSON parsing
+'''
 testConfigFile = open('dom-remove.json')
 config.testConfigJson = json.loads(testConfigFile.read())
 testConfigFile.close()
+'''
+'''
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--custom_config', type=argparse.FileType())
+#parser.add_argument("-с", "--config", help="path to *.json config file")
+args = parser.parse_args()
+if args.custom_config:
+    print("config is used: " + str(args.custom_config))
+'''
+
+
 testingDomain = config.testConfigJson['DomainName']
 
-import ssh_cocon.ssh_cocon as ccn
 '''
 coreNode = 'core1@ecss1'
 sipNode = 'sip1@ecss1'
@@ -29,7 +41,7 @@ colorama.init(autoreset=True)
 
 
 def preconfigure():
-    if ccn.domainDeclare(dom=testingDomain):
+    if ccn.domainDeclare(dom=testingDomain,removeIfExists = True):
         print(Fore.GREEN + 'Successful domain declare')
     else:
         print(Fore.RED + 'Smthing happen wrong with domain declaration...')
@@ -44,6 +56,7 @@ def preconfigure():
             print(Fore.RED + "Test domain wasn't inited :(")
             return False
         time.sleep(2)
+    print(Fore.GREEN +'Domain inited!')
 
     time.sleep(2)
     print('Removing our test domain')
@@ -123,6 +136,6 @@ else:
 print(Fore.GREEN + 'It seems to be all FINE...')
 print('We did it!!')
 
-#ccn.coconInt.eventForStop.set()
+ccn.coconInt.eventForStop.set()
 
 sys.exit(0)
