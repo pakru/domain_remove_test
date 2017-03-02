@@ -1,6 +1,7 @@
 {
   "TestName": "Remove domain test",
   "AutoTest" : "True",
+  "ModulePath" : "None",
   "TestScript" : "dom-remove-test.py",
   "DomainName" : "RM-test",
   "Cocon" : [

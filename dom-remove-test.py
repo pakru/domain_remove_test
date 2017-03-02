@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3.5
 
 import config
+
 #import os
 import time
 import sys

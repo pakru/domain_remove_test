@@ -33,6 +33,9 @@ except Exception as e:
 finally:
     testConfigFile.close()
 
+if testConfigJson['ModulePath'] not in 'None':
+    sys.path.append(testConfigJson['ModulePath']) # add custom path to external modules if it in json config
+
 
 login = testConfigJson['Cocon'][0]['Login']
 password = testConfigJson['Cocon'][0]['Password']
