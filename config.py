@@ -1,4 +1,4 @@
-import json, sys, argparse, os
+import json, sys, argparse, os, logging
 '''
 login = 'admin'
 password = 'password'
@@ -16,34 +16,48 @@ args = parser.parse_args()
 
 if args.custom_config is not None:
     print("Custom json config is used: " + str(os.path.realpath(args.custom_config.name)))
+    #logging.info("Custom json config is used: " + str(os.path.realpath(args.custom_config.name)))
     testConfigFile = args.custom_config
 else:
     print('Default json config is used')
+    #logging.info('Default json config is used')
     try:
         testConfigFile = open('dom-remove.json')
     except Exception as e:
         print('ERROR: Cannot open json config file')
+        #logging.error('Cannot open json config file!')
         sys.exit(1)
 
 try:
     testConfigJson = json.loads(testConfigFile.read())
 except Exception as e:
     print('ERROR: Cannot parse json config file!')
+    #logging.error('Cannot parse json config file!')
     sys.exit(1)
 finally:
     testConfigFile.close()
 
-if testConfigJson['ModulePath'] not in 'None':
-    sys.path.append(testConfigJson['ModulePath']) # add custom path to external modules if it in json config
+logPath = testConfigJson['SystemVars'][0]['%%LOG_PATH%%']
+logFile = logPath+'/'+testConfigJson['TestScript'] + '.log'
+
+logging.basicConfig(filename=logFile, filemode='w', format = u'%(asctime)-8s %(levelname)-8s [%(module)s -> %(funcName)s:%(lineno)d] %(message)-8s', level = logging.INFO)
+
+
+# if testConfigJson['ModulePath'] not in 'None':
+#     sys.path.append(testConfigJson['ModulePath']) # add custom path to external modules if it in json config
 
 if testConfigJson['SystemVars'][0]["%%MODULE_PATH%%"] not in 'None':
     sys.path.append(testConfigJson['SystemVars'][0]['%%MODULE_PATH%%']) # add custom path to external modules if it in json config
-    login = testConfigJson['SystemVars'][0]['%%DEV_USER%%']
-    password = testConfigJson['SystemVars'][0]['%%DEV_PASS%%']
-    host = testConfigJson['SystemVars'][0]['%%SERV_IP%%']
-    port = int(testConfigJson['SystemVars'][0]['%%CCN_PORT%%'])
-else:
-    login = testConfigJson['Cocon'][0]['Login']
-    password = testConfigJson['Cocon'][0]['Password']
-    host = testConfigJson['Cocon'][0]['Host']
-    port = int(testConfigJson['Cocon'][0]['Port'])
+    print('Sys path: ' + sys.path[-1])
+
+
+login = testConfigJson['SystemVars'][0]['%%DEV_USER%%']
+password = testConfigJson['SystemVars'][0]['%%DEV_PASS%%']
+host = testConfigJson['SystemVars'][0]['%%SERV_IP%%']
+port = int(testConfigJson['SystemVars'][0]['%%CCN_PORT%%'])
+
+
+# login = testConfigJson['Cocon'][0]['Login']
+# password = testConfigJson['Cocon'][0]['Password']
+# host = testConfigJson['Cocon'][0]['Host']
+# port = int(testConfigJson['Cocon'][0]['Port'])
