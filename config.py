@@ -12,7 +12,14 @@ dsNode = 'ds1@ecss1'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--custom_config', type=argparse.FileType(), help="Using custom config json file")
+parser.add_argument ('-g', '--global_ccn_lock', type=argparse.FileType('w'), help="Lock file for coconInt")
+
 args = parser.parse_args()
+
+global_ccn_lock = None
+if args.global_ccn_lock:
+    print('Accepted lock file')
+    global_ccn_lock = args.global_ccn_lock
 
 if args.custom_config is not None:
     print("Custom json config is used: " + str(os.path.realpath(args.custom_config.name)))
